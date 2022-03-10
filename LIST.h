@@ -2,8 +2,9 @@
 #include <stdio.h>
 
 
-const int NUMOFDATA = 15;
+const int INIT_SIZE = 15;
 const int TRASHHH = -999;
+const int OUT_OF_MEMORY = 9999;
 
 typedef struct
 {
@@ -17,8 +18,9 @@ typedef struct
     int free = 0;
     int head = 0;
     int tail = 0;
+    int len  = 0;
 
-    ListElem elem[NUMOFDATA] = {};
+    ListElem *elem;
 } List;
 
 int ListCtor(List* lst);

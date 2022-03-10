@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 int ListInsert (List* lst, int pos, int newdata)
 {
     int tmp = abs(lst->elem[lst->free].next);
@@ -9,17 +11,24 @@ int ListInsert (List* lst, int pos, int newdata)
     lst->elem[lst->free].prev = pos;
 
     lst->free = tmp;
-     printf(">>>>>>>> NEW FREE -- %d <<<<", lst->free);
+     printf(">>>>>>>> NEW FREE -- %3d <<<<", lst->free);
     lst->tail++;
 
      printf (">>> ListInsert worked:\n");
-               printf ("               data[%d] = %d <<<\n", lst->free-1, lst->elem[lst->free-1].data); 
+               printf ("               data[%d] = %3d <<<\n", lst->free-1, lst->elem[lst->free-1].data); 
     return 0;
 }
 
 int ListCtor(List* lst)
 {
-    for (int i = 1; i < NUMOFDATA; i++)
+    lst->free = 1;
+    lst->elem = (ListElem*)calloc(INIT_SIZE, sizeof(List));
+    if (lst->elem == NULL)
+        exit (OUT_OF_MEMORY);
+
+    lst->len = INIT_SIZE;
+
+    for (int i = 1; i < INIT_SIZE; i++)
     {
         lst->elem[i].data = 0;
         lst->elem[i].next = -(i +1);
@@ -31,12 +40,12 @@ int ListCtor(List* lst)
 
 int ListDump (List* lst)
 {
-    for (int i = 1; i < NUMOFDATA; i++)
+    for (int i = 1; i < lst->len; i++)
     {
-         printf (">>> Elem[%d] = %d, NEXT = %d, PrevPos = %d <<<\n", i, lst->elem[i].data, lst->elem[i].next, lst->elem[i].prev);
+         printf (">>> Elem[%3d] = %4d, NEXT = %4d, PrevPos = %3d <<<\n", i, lst->elem[i].data, lst->elem[i].next, lst->elem[i].prev);
     }
 
-    printf (">>> FREE = %d, HEAD = %d, TAIL = %d <<<\n\n", lst->free, lst->head, lst->tail);
+    printf (">>> FREE = %4d, HEAD = %4d, TAIL = %4d <<<\n\n", lst->free, lst->head, lst->tail);
 
     return 0;
 }
@@ -61,8 +70,7 @@ int ListDelete (List* lst, int delpos)
     /*2*/ lst->elem[delpos].next = -(lst->free);
     /*3*/ lst->elem[delpos].data = TRASHHH;
 
-          ListDump(lst);
-
+    ListDump(lst);
 
     lst->free = delpos;
 
@@ -111,7 +119,7 @@ int Graphviz_Dump (FILE* log, List* lst)
     {
         //$r printf(">>>>>>>>>>>>>> GRAPHVIZ DUMP -> n == %d<<<<<<<<<<<<<<<<<<<<<<<\n", n);
 
-        if(i >= NUMOFDATA - 1)
+        if(i >= lst->len - 1)
         {
             fprintf (log, "%d[label = \"{%d}|{Data = %d| Next = %d| Prev = %d}\"];\n", i, i, lst->elem[i].data, lst->elem[i].next, lst->elem[i].prev);
             break;
@@ -125,7 +133,7 @@ int Graphviz_Dump (FILE* log, List* lst)
     i = 1;
     fprintf (log, "edge [color=\"white\"]\n");
 
-    while(i < NUMOFDATA - 1)
+    while(i < lst->len - 1)
     {
         fprintf(log, " %d->%d; \n", i, i + 1);
         i++;
@@ -182,20 +190,22 @@ int Graphviz_Dump (FILE* log, List* lst)
 
 int liner (List* lst)
 {
-    int tmp_arr[NUMOFDATA] = {};
+    int tmp = lst->len;
+
+    int tmp_arr[tmp] = {};
 
     lst->elem[lst->head].data = tmp_arr[1];
 
     int nxt = lst->elem[lst->head].next;
 
-    for (int i = 2; i < NUMOFDATA - lst->head; i++)
+    for (int i = 2; i < lst->len - lst->head; i++)
     {
         tmp_arr[i] = lst->elem[nxt].data;
 
         nxt = lst->elem[nxt].next;
     }
 
-    for (int i = 1; i < NUMOFDATA; i++)
+    for (int i = 1; i < lst->len; i++)
     {
         lst->elem[i].data = tmp_arr[i];
     }
