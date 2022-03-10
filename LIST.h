@@ -1,4 +1,5 @@
-#include <TXLib.h>
+#include <stdlib.h>
+#include <stdio.h>
 
 
 const int NUMOFDATA = 15;

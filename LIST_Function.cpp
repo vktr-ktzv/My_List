@@ -9,11 +9,11 @@ int ListInsert (List* lst, int pos, int newdata)
     lst->elem[lst->free].prev = pos;
 
     lst->free = tmp;
-    $r printf(">>>>>>>> NEW FREE -- %d <<<<", lst->free);
+     printf(">>>>>>>> NEW FREE -- %d <<<<", lst->free);
     lst->tail++;
 
-    $y printf (">>> ListInsert worked:\n");
-               printf ("               data[%d] = %d <<<\n", lst->free-1, lst->elem[lst->free-1].data); $d
+     printf (">>> ListInsert worked:\n");
+               printf ("               data[%d] = %d <<<\n", lst->free-1, lst->elem[lst->free-1].data); 
     return 0;
 }
 
@@ -33,10 +33,10 @@ int ListDump (List* lst)
 {
     for (int i = 1; i < NUMOFDATA; i++)
     {
-       $g printf (">>> Elem[%d] = %d, NEXT = %d, PrevPos = %d <<<\n", i, lst->elem[i].data, lst->elem[i].next, lst->elem[i].prev); $d
+         printf (">>> Elem[%d] = %d, NEXT = %d, PrevPos = %d <<<\n", i, lst->elem[i].data, lst->elem[i].next, lst->elem[i].prev);
     }
 
-    $y printf (">>> FREE = %d, HEAD = %d, TAIL = %d <<<\n\n", lst->free, lst->head, lst->tail);$d
+    printf (">>> FREE = %d, HEAD = %d, TAIL = %d <<<\n\n", lst->free, lst->head, lst->tail);
 
     return 0;
 }
@@ -71,7 +71,7 @@ int ListDelete (List* lst, int delpos)
 
 int ListFilling (List* lst)
 {
-    $g printf (">>> This is ListFilling. If you want to stop insert ^stop^ <<<\n");
+     printf (">>> This is ListFilling. If you want to stop insert ^stop^ <<<\n");
 
     int i = 1;
 
@@ -96,7 +96,7 @@ int ListFilling (List* lst)
 
     lst->free++;
 
-    $d return 0;
+     return 0;
 }
 
 int Graphviz_Dump (FILE* log, List* lst)
