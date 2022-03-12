@@ -22,21 +22,23 @@ int main()
 
     ListFilling(&lst);
 
+    ListDump (&lst);
+
     ListInsert (&lst, 2, 99);
 
-    ListDelete (&lst, 5);
+   // ListDelete (&lst, 5);
 
-    ListInsert (&lst, 7, 88);
+    //ListInsert (&lst, 7, 88);
 
-    ListInsert (&lst, 8, 77);
+   // ListInsert (&lst, 8, 77);
 
-    ListDelete (&lst, 9);
+   // ListDelete (&lst, 9);
 
-    ListDelete (&lst, 1);
+    //ListDelete (&lst, 1);
 
     ListDump (&lst);
 
-    liner (&lst);
+    //liner (&lst);
 
     ListDump (&lst);
 

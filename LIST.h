@@ -1,8 +1,10 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <assert.h>
 
 
-const int INIT_SIZE = 15;
+const int INIT_SIZE = 2;
+const int MULTIPLIER = 2;
 const int TRASHHH = -999;
 const int OUT_OF_MEMORY = 9999;
 
@@ -31,5 +33,4 @@ int ListDeleteFirst(List* lst);
 int ListFilling (List* lst);
 int liner (List* lst);
 int Graphviz_Dump (FILE* log, List* lst);
-
-#include "LIST_Function.cpp"
+int resize_list (List* lst);

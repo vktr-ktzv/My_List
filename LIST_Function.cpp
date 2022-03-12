@@ -1,21 +1,31 @@
 #include <stdio.h>
+#include "LIST.h"
+
 
 int ListInsert (List* lst, int pos, int newdata)
 {
+   
+    printf(">>> TAIL - %d;   FREE - %d <<< \n", lst->tail, lst->free);
+
+    /*if (lst->tails >= lst->len)
+    {
+        resize_list(lst);
+    }*/
+
     int tmp = abs(lst->elem[lst->free].next);
-    /*0*/ lst->elem[lst->free].data  = newdata;
+    /*0*/ lst->elem[lst->free].data = newdata;
     /*1*/ lst->elem[lst->elem[pos].next].prev = lst->free;
-    /*2*/ lst->elem[lst->free].next  = lst->elem[pos].next;
+    /*2*/ lst->elem[lst->free].next = lst->elem[pos].next;
     /*3*/ lst->elem[pos].next = lst->free;
 
     lst->elem[lst->free].prev = pos;
 
     lst->free = tmp;
-     printf(">>>>>>>> NEW FREE -- %3d <<<<", lst->free);
+    printf(">>>>>>>> NEW FREE -- %3d <<<<", lst->free);
     lst->tail++;
 
-     printf (">>> ListInsert worked:\n");
-               printf ("               data[%d] = %3d <<<\n", lst->free-1, lst->elem[lst->free-1].data); 
+    printf (">>> ListInsert worked:\n");
+    printf ("               data[%d] = %3d <<<\n", lst->free-1, lst->elem[lst->free-1].data); 
     return 0;
 }
 
@@ -31,7 +41,7 @@ int ListCtor(List* lst)
     for (int i = 1; i < INIT_SIZE; i++)
     {
         lst->elem[i].data = 0;
-        lst->elem[i].next = -(i +1);
+        lst->elem[i].next = -(i + 1);
         lst->elem[i].prev = i - 1;
     }
 
@@ -66,7 +76,6 @@ int ListDelete (List* lst, int delpos)
 
     /*0*/ lst->elem[lst->elem[delpos].next].prev = lst->elem[delpos].prev;
     /*1*/ lst->elem[lst->elem[delpos].prev].next = lst->elem[delpos].next;
-    //lst->elem[lst->elem[delpos - 1].next].
     /*2*/ lst->elem[delpos].next = -(lst->free);
     /*3*/ lst->elem[delpos].data = TRASHHH;
 
@@ -87,22 +96,29 @@ int ListFilling (List* lst)
     {
         printf(">>> Insert data <<<\n");
 
-        if (scanf("%d", &lst->elem[i].data) == 0)
+        if (i >= lst->len)
         {
-            lst->elem[i-1].next = 0;
+            printf(">> WANT TO RESIZE <<< \n\n");
+            resize_list (lst);
+            printf(">>> Resize_List WORKED <<<\n");     
+        }
+
+        if (scanf("%d", &lst->elem[i].data) == 0)
+        {    
+            lst->elem[i - 1].next = 0; 
             break;
         }
 
         lst->elem[i].next = i + 1;
-        lst->elem[i].prev = lst->elem[i - 1].next - 1;
+        lst->elem[i].prev = i - 1; //lst->elem[i - 1].next - 1;
 
-        lst->free ++;
+        lst->free++;
         lst->tail++;
 
         i++;
     }
 
-    lst->free++;
+    //lst->free++;
 
      return 0;
 }
@@ -210,5 +226,28 @@ int liner (List* lst)
         lst->elem[i].data = tmp_arr[i];
     }
 
+    return 0;
+}
+
+int resize_list (List* lst)
+{
+    int tmp = lst->len;
+
+    lst->elem = (ListElem*)realloc(lst->elem, sizeof(ListElem)*MULTIPLIER*(lst->len));
+    lst->len *= MULTIPLIER;
+
+    for (int i = tmp; i < lst->len; i++)
+    {
+        lst->elem[i].data = 0;
+        lst->elem[i].next = 0;
+        lst->elem[i].prev = 0; 
+    }
+    
+    if (lst->elem == NULL)
+    {
+        exit (OUT_OF_MEMORY);
+    }
+
+    printf(">>RESIZE IN<<<\n\n >>> NEW LEN  - %d <<<\n\n", lst->len);
     return 0;
 }
