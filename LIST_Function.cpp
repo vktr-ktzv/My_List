@@ -1,20 +1,20 @@
 #include <stdio.h>
 #include "LIST.h"
 
-
 int ListInsert (List* lst, int pos, int newdata)
 {
    
     printf(">>> TAIL - %d;   FREE - %d <<< \n", lst->tail, lst->free);
 
-    /*if (lst->tails >= lst->len)
+    if (lst->tail + 2 >= lst->len)
     {
         resize_list(lst);
-    }*/
+    }
 
     int tmp = abs(lst->elem[lst->free].next);
     /*0*/ lst->elem[lst->free].data = newdata;
     /*1*/ lst->elem[lst->elem[pos].next].prev = lst->free;
+    printf(">>> FREE - %d, TMP - %d", lst->free, tmp);
     /*2*/ lst->elem[lst->free].next = lst->elem[pos].next;
     /*3*/ lst->elem[pos].next = lst->free;
 
@@ -38,12 +38,28 @@ int ListCtor(List* lst)
 
     lst->len = INIT_SIZE;
 
+    lst->elem[0].next = 1;
+
     for (int i = 1; i < INIT_SIZE; i++)
     {
         lst->elem[i].data = 0;
         lst->elem[i].next = -(i + 1);
         lst->elem[i].prev = i - 1;
     }
+
+    return 0;
+}
+
+int ListDctor (List* lst)
+{
+    for (int i = 1; i < lst->len; i++)
+    {
+        lst->elem[i].data = 0;
+        lst->elem[i].next = 0;
+        lst->elem[i].prev = 0;    
+    } 
+
+    free(lst->elem);
 
     return 0;
 }
@@ -178,26 +194,6 @@ int Graphviz_Dump (FILE* log, List* lst)
 
     }
 
-
-
-        /*
-
-        fprintf (log, "\"data: %d - %d\" -> \"data: %d - %d\";\n  ", i, lst->elem[i].data, lst->elem[i].next, lst->elem[lst->elem[i].next].data );
-
-
-        if (lst->elem[lst->elem[i].next].next <= 0)
-        {
-            fprintf (log, "\"data: %d - %d\" -> \"data: %d - %d\" ", i, lst->elem[i].data, lst->elem[i].next, lst->elem[lst->elem[i].next].data);
-            break;
-        }
-
-        i = lst->elem[i].next;
-
-    }*/
-   // fprintf (log, "[style =
-
-
-
     fprintf (log, "\n}");
 
 
@@ -208,23 +204,39 @@ int liner (List* lst)
 {
     int tmp = lst->len;
 
-    int tmp_arr[tmp] = {};
-
-    lst->elem[lst->head].data = tmp_arr[1];
+    int* tmp_arr;
+    tmp_arr = (int*)calloc(lst->len, sizeof(int));
 
     int nxt = lst->elem[lst->head].next;
 
-    for (int i = 2; i < lst->len - lst->head; i++)
+    for (int i = 1; (i < lst->len - lst->head) ; i++)
     {
+        
         tmp_arr[i] = lst->elem[nxt].data;
+        printf(">>>tmp_arr[%d] = %d\n", i, lst->elem[nxt].data);
 
         nxt = lst->elem[nxt].next;
+        if (nxt == 0)
+        {
+            break;
+        }
     }
 
-    for (int i = 1; i < lst->len; i++)
+    int list_counter = 1;
+    for (int tmp_counter = 1; tmp_counter < lst->len; tmp_counter++)
     {
-        lst->elem[i].data = tmp_arr[i];
+       if (lst->elem[tmp_counter].data != TRASHHH)
+       {
+           lst->elem[list_counter].data = tmp_arr[tmp_counter];
+           lst->elem[list_counter].next = list_counter + 1;
+           lst->elem[list_counter].prev = list_counter - 1;
+
+           list_counter++;
+       }
+        
     }
+
+    free (tmp_arr);
 
     return 0;
 }
@@ -239,8 +251,8 @@ int resize_list (List* lst)
     for (int i = tmp; i < lst->len; i++)
     {
         lst->elem[i].data = 0;
-        lst->elem[i].next = 0;
-        lst->elem[i].prev = 0; 
+        lst->elem[i].next = -(i + 1);
+        lst->elem[i].prev = i - 1; 
     }
     
     if (lst->elem == NULL)

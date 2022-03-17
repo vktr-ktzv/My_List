@@ -5,7 +5,7 @@
 
 const int INIT_SIZE = 2;
 const int MULTIPLIER = 2;
-const int TRASHHH = -999;
+const int TRASHHH = 0xFFFFFF;
 const int OUT_OF_MEMORY = 9999;
 
 typedef struct
@@ -20,12 +20,13 @@ typedef struct
     int free = 0;
     int head = 0;
     int tail = 0;
-    int len  = 0;
+    unsigned int len  = 0;
 
     ListElem *elem;
 } List;
 
-int ListCtor(List* lst);
+int ListCtor (List* lst);
+int ListDctor (List* lst);
 int ListDump (List* lst);
 int ListInsert (List* lst, int pos, int newdata);
 int ListDelete (List* lst, int delpos);

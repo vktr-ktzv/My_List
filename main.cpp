@@ -7,26 +7,13 @@ int main()
 
     ListCtor(&lst);
 
-    /*lst.elem[1].data = 10;
-    lst.elem[1].next = 2;
-
-    lst.elem[2].data = 20;
-    lst.elem[2].next = 3;
-
-    lst.elem[3].data = 30;
-    lst.elem[3].next = 0;
-
-    lst.free = 4;
-    lst.head = 1;
-    lst.tail = 3;*/
-
     ListFilling(&lst);
 
     ListDump (&lst);
 
     ListInsert (&lst, 2, 99);
 
-   // ListDelete (&lst, 5);
+    ListDelete (&lst, 5);
 
     //ListInsert (&lst, 7, 88);
 
@@ -38,7 +25,7 @@ int main()
 
     ListDump (&lst);
 
-    //liner (&lst);
+    liner (&lst);
 
     ListDump (&lst);
 
@@ -47,6 +34,8 @@ int main()
     Graphviz_Dump (log, &lst);
 
     fclose(log);
+
+    ListDctor(&lst);
 
     return 0;
 }
