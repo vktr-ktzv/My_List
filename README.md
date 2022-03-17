@@ -3,6 +3,8 @@ This is my realistion of list in C. You need to input functions _ListCtor_ at th
 
 So this is short instruction for my prog.
 
+To see beautiful graphiz dump you can open _.svg_ file in your browser.
+
 # Documetation:
 ## _int ListCtor (List* lst)_
 
